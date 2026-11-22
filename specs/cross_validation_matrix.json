@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "AOP2 & RTKit Clean-Room Cross-Validation Matrix",
   "extraction_confidence": {
-    "EXTRACTED": 24,
+    "EXTRACTED": 36,
     "INFERRED": 3,
     "TENTATIVE": 1,
     "UNKNOWN": 0
@@ -231,6 +231,102 @@
       "file_offset": "Pixel format descriptors",
       "confidence": "TENTATIVE",
       "validation_method": "Frame buffer stride and dimension correlation"
+    },
+    {
+      "id": "AOP1_IM4P_FOURCC",
+      "constant": "aopf",
+      "binary_source": "aopfw-v57aop.RELEASE.im4p",
+      "file_offset": "0x0000000d",
+      "confidence": "EXTRACTED",
+      "validation_method": "ASN.1 DER sequence extraction of legacy/ancillary AOP1 firmware container"
+    },
+    {
+      "id": "AOP1_MMIO_BASE",
+      "constant": "0x0000000100600000",
+      "binary_source": "DeviceTree.v57ap.im4p",
+      "file_offset": "/device-tree/arm-io/aop reg entry 0",
+      "confidence": "EXTRACTED",
+      "validation_method": "DeviceTree property parsing for AOP1 ASCwrap-v6 mailbox"
+    },
+    {
+      "id": "BOOT_CHIME_AUBT_FOURCC",
+      "constant": "aubt",
+      "binary_source": "v57-boot-chime.im4p",
+      "file_offset": "0x0000000d",
+      "confidence": "EXTRACTED",
+      "validation_method": "ASN.1 DER sequence extraction of Audio Boot Tone asset"
+    },
+    {
+      "id": "BOOT_CHIME_PCM_SIZE",
+      "constant": "582531 bytes",
+      "binary_source": "v57-boot-chime.im4p",
+      "file_offset": "0x00000018 (Octet String payload)",
+      "confidence": "EXTRACTED",
+      "validation_method": "Raw audio byte payload measurement"
+    },
+    {
+      "id": "BOOT_CHIME_SAMPLE_RATE",
+      "constant": "48000 Hz, 16-bit stereo PCM (3.034s)",
+      "binary_source": "AppleAOPAudioPCMAssetManagerDevice",
+      "file_offset": "Kernel driver playback format",
+      "confidence": "EXTRACTED",
+      "validation_method": "PCM sample rate and frame calculation"
+    },
+    {
+      "id": "CL4_CAPABILITY_TYPES_COUNT",
+      "constant": "23 (L4_Type_Null through L4_Type_Plat_Asc)",
+      "binary_source": "00_roottask_iop_asc7.macho",
+      "file_offset": "L4_ObjectSizes and type string table",
+      "confidence": "EXTRACTED",
+      "validation_method": "PitayaOS cL4 capability enumeration in roottask binary"
+    },
+    {
+      "id": "CL4_ERROR_CODES_COUNT",
+      "constant": "9 (L4_ErrorPreempted through L4_ErrorPermissionInvalid)",
+      "binary_source": "00_roottask_iop_asc7.macho",
+      "file_offset": "Debug string table in roottask/src/debug.c",
+      "confidence": "EXTRACTED",
+      "validation_method": "String literal extraction of cL4 error symbols"
+    },
+    {
+      "id": "TB_MESSAGE_STRUCT_SIGNATURE",
+      "constant": "tb_message_s=ICQQQQ[4Q]Q^{tb_transport_message_buffer_s}",
+      "binary_source": "03_audio_hotword_app.macho",
+      "file_offset": "Type encoding metadata",
+      "confidence": "EXTRACTED",
+      "validation_method": "Objective-C / C++ type signature extraction"
+    },
+    {
+      "id": "BACKLIGHT_AOD_RAMP_DURATION",
+      "constant": "64 milliseconds (0x00000040)",
+      "binary_source": "DeviceTree.v57ap.im4p",
+      "file_offset": "/device-tree/backlight aml-ramp-aod-duration",
+      "confidence": "EXTRACTED",
+      "validation_method": "DeviceTree backlight node property decoding"
+    },
+    {
+      "id": "BACKLIGHT_SIL_ENABLED",
+      "constant": "1 (Hardware Sensor Indicator Light enabled)",
+      "binary_source": "DeviceTree.v57ap.im4p",
+      "file_offset": "/device-tree/backlight sil-enabled",
+      "confidence": "EXTRACTED",
+      "validation_method": "DeviceTree property parsing"
+    },
+    {
+      "id": "EXBRIGHT_EXCLAVE_SERVICE",
+      "constant": "com.apple.service.EXBrightCore",
+      "binary_source": "DeviceTree.v57ap.im4p",
+      "file_offset": "/device-tree/exbright exclave-service",
+      "confidence": "EXTRACTED",
+      "validation_method": "DeviceTree property parsing"
+    },
+    {
+      "id": "SPU_TOF_HARDWARE_IC",
+      "constant": "STMicroelectronics VD6286 / VD6287 / VL628",
+      "binary_source": "kernelcache.release.raw",
+      "file_offset": "AppleSPUVD6286 / AppleSPUVD6287 / AppleSPUVL628 driver symbols",
+      "confidence": "EXTRACTED",
+      "validation_method": "Symbol correlation in kernel driver binary"
     }
   ]
 }

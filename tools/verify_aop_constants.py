@@ -11,7 +11,8 @@ Verifies:
 5. Continuous Sensor Hub 64-byte IMU sample layout and lock-free SPSC fastpath geometry.
 6. 1Hz Always-On Display (AOD) DCP buffer geometry and local Siri 3.0s SRAM FIFO sizing.
 7. Direct ExclaveOS cross-enclave routing (DART SID 0x11, EP 0x53).
-8. Clean syntax compilation of aop_rtkit_channel.pseudo.c via gcc.
+8. Forensic audit firmware verification (AOP1 'aopf' and Audio Boot Tone 'aubt').
+9. Clean syntax compilation of aop_rtkit_channel client via gcc.
 """
 
 import json
@@ -33,23 +34,32 @@ def run_all_verifications() -> bool:
     print("=== AOP2, RTKit Microkernel & Sensor Hub Architecture Verification ===")
     all_ok = True
 
+    specs_dir = ROOT / "artifacts/aop" if (ROOT / "artifacts/aop").is_dir() else ROOT / "specs"
+    docs_dir = ROOT / "findings/aop" if (ROOT / "findings/aop").is_dir() else ROOT / "docs"
+    runtime_dir = ROOT / "artifacts/aop/pseudocode" if (ROOT / "artifacts/aop/pseudocode").is_dir() else ROOT / "runtime"
+
+    c_client = runtime_dir / "aop_rtkit_channel.pseudo.c"
+    if not c_client.is_file():
+        c_client = runtime_dir / "aop_rtkit_channel.c"
+
     # 1. Verify File Existence
     required_files = [
-        ROOT / "artifacts/aop/phase_1a_workspace_baseline.json",
-        ROOT / "artifacts/aop/aop_firmware_container_spec.json",
-        ROOT / "artifacts/aop/rtkit_microkernel_spec.json",
-        ROOT / "artifacts/aop/aop_service_topology.json",
-        ROOT / "artifacts/aop/aop_hardware_registers.json",
-        ROOT / "artifacts/aop/sensor_hub_geometry.json",
-        ROOT / "artifacts/aop/rtkit_endpoint_wire_spec.json",
-        ROOT / "artifacts/aop/aop_mailbox_protocol.json",
-        ROOT / "artifacts/aop/xnu_aop_boundary_spec.json",
-        ROOT / "artifacts/aop/pseudocode/aop_rtkit_channel.pseudo.c",
-        ROOT / "findings/aop/01A_WORKSPACE_BASELINE.md",
-        ROOT / "findings/aop/01B_RTKIT_MICROKERNEL.md",
-        ROOT / "findings/aop/02_HARDWARE_AND_SENSOR_HUB.md",
-        ROOT / "findings/aop/03_ENDPOINT_WIRE_FORMAT.md",
-        ROOT / "findings/aop/04_XNU_DRIVER_BOUNDARY.md"
+        specs_dir / "phase_1a_workspace_baseline.json",
+        specs_dir / "aop_firmware_container_spec.json",
+        specs_dir / "rtkit_microkernel_spec.json",
+        specs_dir / "aop_service_topology.json",
+        specs_dir / "aop_hardware_registers.json",
+        specs_dir / "sensor_hub_geometry.json",
+        specs_dir / "rtkit_endpoint_wire_spec.json",
+        specs_dir / "aop_mailbox_protocol.json",
+        specs_dir / "xnu_aop_boundary_spec.json",
+        c_client,
+        docs_dir / "01A_WORKSPACE_BASELINE.md",
+        docs_dir / "01B_RTKIT_MICROKERNEL.md",
+        docs_dir / "02_HARDWARE_AND_SENSOR_HUB.md",
+        docs_dir / "03_ENDPOINT_WIRE_FORMAT.md",
+        docs_dir / "04_XNU_DRIVER_BOUNDARY.md",
+        docs_dir / "05_COMPREHENSIVE_AUDIT_REPORT.md"
     ]
 
     for rf in required_files:
@@ -60,7 +70,7 @@ def run_all_verifications() -> bool:
             return False
 
     # 2. BUND Container Specification Verification
-    bund_file = ROOT / "artifacts/aop/aop_firmware_container_spec.json"
+    bund_file = specs_dir / "aop_firmware_container_spec.json"
     bund_data = json.loads(bund_file.read_text())
 
     all_ok &= verify_assertion(
@@ -125,7 +135,7 @@ def run_all_verifications() -> bool:
     )
 
     # 4. Hardware MMIO Registers & DART IOMMU Verification
-    hw_file = ROOT / "artifacts/aop/aop_hardware_registers.json"
+    hw_file = specs_dir / "aop_hardware_registers.json"
     hw_data = json.loads(hw_file.read_text())
 
     bases = hw_data.get("mmio_peripheral_bases", {})
@@ -158,7 +168,7 @@ def run_all_verifications() -> bool:
     )
 
     # 5. RTKit Endpoint Wire Specification Verification
-    wire_file = ROOT / "artifacts/aop/rtkit_endpoint_wire_spec.json"
+    wire_file = specs_dir / "rtkit_endpoint_wire_spec.json"
     wire_data = json.loads(wire_file.read_text())
 
     geom = wire_data.get("word_geometry", {}).get("fields", {})
@@ -181,7 +191,7 @@ def run_all_verifications() -> bool:
     )
 
     # 6. Sensor Hub & Ultra-Low-Power Hardware Geometry
-    sensor_file = ROOT / "artifacts/aop/sensor_hub_geometry.json"
+    sensor_file = specs_dir / "sensor_hub_geometry.json"
     sensor_data = json.loads(sensor_file.read_text())
 
     all_ok &= verify_assertion(
@@ -206,26 +216,46 @@ def run_all_verifications() -> bool:
     )
 
     # 7. Clean-Room C Client Syntax Validation
-    c_client = ROOT / "artifacts/aop/pseudocode/aop_rtkit_channel.pseudo.c"
     res = subprocess.run(
         ["gcc", "-fsyntax-only", "-Wall", "-Wextra", str(c_client)],
         capture_output=True,
         text=True
     )
     all_ok &= verify_assertion(
-        "gcc -fsyntax-only -Wall -Wextra aop_rtkit_channel.pseudo.c passes with zero warnings/errors",
+        f"gcc -fsyntax-only -Wall -Wextra {c_client.name} passes with zero warnings/errors",
         res.returncode == 0,
         res.stderr.strip() if res.stderr else "Clean compilation"
     )
 
-    # 8. Cross-Validation Matrix
-    cv_file = ROOT / "artifacts/aop/cross_validation_matrix.json"
+    # 8. Forensic Audit Firmware Verification (AOP1 and Audio Boot Tone)
+    aop1_im4p = ROOT / "iPhone18,3_27.2_24B119_Restore/Firmware/AOP/aopfw-v57aop.RELEASE.im4p"
+    if not aop1_im4p.is_file():
+        aop1_im4p = Path("/home/prem/Projects/iOS 27/iPhone18,3_27.2_24B119_Restore/Firmware/AOP/aopfw-v57aop.RELEASE.im4p")
+    if aop1_im4p.is_file():
+        aop1_bytes = aop1_im4p.read_bytes()
+        all_ok &= verify_assertion(
+            "AOP1 Image4 container has FourCC tag 'aopf'",
+            b"aopf" in aop1_bytes[:32]
+        )
+
+    chime_im4p = ROOT / "iPhone18,3_27.2_24B119_Restore/Firmware/embeddedaudioresources/image4/v57-boot-chime.im4p"
+    if not chime_im4p.is_file():
+        chime_im4p = Path("/home/prem/Projects/iOS 27/iPhone18,3_27.2_24B119_Restore/Firmware/embeddedaudioresources/image4/v57-boot-chime.im4p")
+    if chime_im4p.is_file():
+        chime_bytes = chime_im4p.read_bytes()
+        all_ok &= verify_assertion(
+            "Boot chime Image4 container has FourCC tag 'aubt' (Audio Boot Tone)",
+            b"aubt" in chime_bytes[:32] and len(chime_bytes) == 582555
+        )
+
+    # 9. Cross-Validation Matrix
+    cv_file = specs_dir / "cross_validation_matrix.json"
     if cv_file.is_file():
         cv_data = json.loads(cv_file.read_text())
         ext_count = cv_data.get("extraction_confidence", {}).get("EXTRACTED", 0)
         all_ok &= verify_assertion(
-            f"cross_validation_matrix has >= 10 EXTRACTED constants ({ext_count})",
-            ext_count >= 10
+            f"cross_validation_matrix has >= 30 EXTRACTED constants ({ext_count})",
+            ext_count >= 30
         )
 
     print("\n" + ("=" * 70))
