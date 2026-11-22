@@ -1,0 +1,236 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AOP2 & RTKit Clean-Room Cross-Validation Matrix",
+  "extraction_confidence": {
+    "EXTRACTED": 24,
+    "INFERRED": 3,
+    "TENTATIVE": 1,
+    "UNKNOWN": 0
+  },
+  "entries": [
+    {
+      "id": "AOP2_IM4P_MAGIC",
+      "constant": "IM4P",
+      "binary_source": "aop2fw-v57aop2.RELEASE.im4p",
+      "file_offset": "0x00000007",
+      "confidence": "EXTRACTED",
+      "validation_method": "ASN.1 DER header parsing"
+    },
+    {
+      "id": "AOP2_BUND_MAGIC",
+      "constant": "0x444e5542 ('DNUB')",
+      "binary_source": "aop2fw-v57aop2.RELEASE.im4p",
+      "file_offset": "0x00000021",
+      "confidence": "EXTRACTED",
+      "validation_method": "BUND container header identification"
+    },
+    {
+      "id": "AOP2_BUND_VERSION",
+      "constant": "0x00040000",
+      "binary_source": "aop2fw-v57aop2.RELEASE.im4p",
+      "file_offset": "0x00000025",
+      "confidence": "EXTRACTED",
+      "validation_method": "BUND container version field"
+    },
+    {
+      "id": "SUB_BIN_00_OFFSET",
+      "constant": "69657 (0x11019)",
+      "binary_source": "aop2fw-v57aop2.RELEASE.im4p",
+      "file_offset": "0x00011019",
+      "confidence": "EXTRACTED",
+      "validation_method": "Mach-O 64-bit header scan (roottask.IOP_ASC7.RELEASE)"
+    },
+    {
+      "id": "SUB_BIN_01_OFFSET",
+      "constant": "208921 (0x33019)",
+      "binary_source": "aop2fw-v57aop2.RELEASE.im4p",
+      "file_offset": "0x00033019",
+      "confidence": "EXTRACTED",
+      "validation_method": "Mach-O 64-bit header scan (Motion App)"
+    },
+    {
+      "id": "SUB_BIN_02_OFFSET",
+      "constant": "311321 (0x4c019)",
+      "binary_source": "aop2fw-v57aop2.RELEASE.im4p",
+      "file_offset": "0x0004c019",
+      "confidence": "EXTRACTED",
+      "validation_method": "Mach-O 64-bit header scan (AONLocationApp)"
+    },
+    {
+      "id": "SUB_BIN_03_OFFSET",
+      "constant": "434201 (0x6a019)",
+      "binary_source": "aop2fw-v57aop2.RELEASE.im4p",
+      "file_offset": "0x0006a019",
+      "confidence": "EXTRACTED",
+      "validation_method": "Mach-O 64-bit header scan (Audio Hotword App)"
+    },
+    {
+      "id": "SUB_BIN_04_OFFSET",
+      "constant": "823321 (0xc9019)",
+      "binary_source": "aop2fw-v57aop2.RELEASE.im4p",
+      "file_offset": "0x000c9019",
+      "confidence": "EXTRACTED",
+      "validation_method": "Mach-O 64-bit header scan (RTKit Exclave Bridge)"
+    },
+    {
+      "id": "SUB_BIN_05_OFFSET",
+      "constant": "888857 (0xd9019)",
+      "binary_source": "aop2fw-v57aop2.RELEASE.im4p",
+      "file_offset": "0x000d9019",
+      "confidence": "EXTRACTED",
+      "validation_method": "Mach-O 64-bit header scan (AppleSPUFirmwareBuilder dylib)"
+    },
+    {
+      "id": "SUB_BIN_06_OFFSET",
+      "constant": "5439513 (0x530019)",
+      "binary_source": "aop2fw-v57aop2.RELEASE.im4p",
+      "file_offset": "0x00530019",
+      "confidence": "EXTRACTED",
+      "validation_method": "Mach-O 64-bit header scan (RTKit Preload @ 0xffffffff00000000)"
+    },
+    {
+      "id": "AOP2_MMIO_BASE",
+      "constant": "0x0000000101600000",
+      "binary_source": "DeviceTree.v57ap.im4p",
+      "file_offset": "Node: /device-tree/arm-io/aop2 (reg[0])",
+      "confidence": "EXTRACTED",
+      "validation_method": "DeviceTree binary parser"
+    },
+    {
+      "id": "AOP2_MMIO_SIZE",
+      "constant": "0x00088000 (557,056 bytes)",
+      "binary_source": "DeviceTree.v57ap.im4p",
+      "file_offset": "Node: /device-tree/arm-io/aop2 (reg[0])",
+      "confidence": "EXTRACTED",
+      "validation_method": "DeviceTree binary parser"
+    },
+    {
+      "id": "DOORBELL_MMIO_BASE",
+      "constant": "0x000000010162c000",
+      "binary_source": "DeviceTree.v57ap.im4p",
+      "file_offset": "Node: /device-tree/arm-io/aop2 (reg[2])",
+      "confidence": "EXTRACTED",
+      "validation_method": "DeviceTree binary parser"
+    },
+    {
+      "id": "EXCLAVE_MAILBOX_BASE",
+      "constant": "0x000000035167c000",
+      "binary_source": "DeviceTree.v57ap.im4p",
+      "file_offset": "Node: /device-tree/arm-io/aop2-exclave-mailbox (reg[0])",
+      "confidence": "EXTRACTED",
+      "validation_method": "DeviceTree binary parser"
+    },
+    {
+      "id": "DART_AOP_MMIO_BASE",
+      "constant": "0x0000000100fc0000",
+      "binary_source": "DeviceTree.v57ap.im4p",
+      "file_offset": "Node: /device-tree/arm-io/dart-aop (reg[0])",
+      "confidence": "EXTRACTED",
+      "validation_method": "DeviceTree binary parser"
+    },
+    {
+      "id": "DART_SID_AOP2",
+      "constant": "0x10",
+      "binary_source": "DeviceTree.v57ap.im4p",
+      "file_offset": "Node: /device-tree/arm-io/dart-aop/mapper-aop2",
+      "confidence": "EXTRACTED",
+      "validation_method": "DeviceTree binary parser"
+    },
+    {
+      "id": "DART_SID_EXCLAVE_AOP2",
+      "constant": "0x11",
+      "binary_source": "DeviceTree.v57ap.im4p",
+      "file_offset": "Node: /device-tree/arm-io/dart-aop/mapper-exclave-aop2",
+      "confidence": "EXTRACTED",
+      "validation_method": "DeviceTree binary parser"
+    },
+    {
+      "id": "FASTPATH_RING_SIZE",
+      "constant": "16384 bytes (0x4000)",
+      "binary_source": "kernelcache.release.raw",
+      "file_offset": "AppleSPUFastpathDriver (queueSize: 254)",
+      "confidence": "EXTRACTED",
+      "validation_method": "Kernelcache driver property analysis"
+    },
+    {
+      "id": "IMU_SAMPLE_SIZE",
+      "constant": "64 bytes",
+      "binary_source": "01_motion_expert_app.macho",
+      "file_offset": "__DATA segment buffer stride",
+      "confidence": "EXTRACTED",
+      "validation_method": "Disassembly of fastpath producer routine"
+    },
+    {
+      "id": "SIRI_SRAM_FIFO_SIZE",
+      "constant": "96,000 bytes (3.0s @ 16kHz 16-bit)",
+      "binary_source": "kernelcache.release.raw",
+      "file_offset": "AppleAOPAudioLPMicInDevice (kAppleAOPLPMicHistoryChannels)",
+      "confidence": "EXTRACTED",
+      "validation_method": "Kernelcache property & acoustic parameters calculation"
+    },
+    {
+      "id": "AOD_DCP_BUFFER_SIZE",
+      "constant": "262,144 bytes (256 KB)",
+      "binary_source": "DeviceTree.v57ap.im4p",
+      "file_offset": "Node: /device-tree/arm-io/aop/iop-aop-nub/dcp-control",
+      "confidence": "EXTRACTED",
+      "validation_method": "DeviceTree property extraction (aop-dcp-buffer-size)"
+    },
+    {
+      "id": "ALS_MILLI_LUX_FORMAT",
+      "constant": "lux = raw_int / 1000",
+      "binary_source": "kernelcache.release.raw",
+      "file_offset": "AppleSPUALSColorDriver ('copy ALS event with lux = %d/1000')",
+      "confidence": "EXTRACTED",
+      "validation_method": "String literal extraction from driver binary"
+    },
+    {
+      "id": "EXCLAVE_EP53_CHANNEL",
+      "constant": "sharedmem_xcoproc_AOP2_EP53_in",
+      "binary_source": "04_rtkit_exclave_bridge.macho",
+      "file_offset": "RTKExclaveTBEndpoint descriptor",
+      "confidence": "EXTRACTED",
+      "validation_method": "Symbol and endpoint string correlation"
+    },
+    {
+      "id": "RTKIT_SCHEDULER_PRIORITIES",
+      "constant": "64 Priority Levels (0..63)",
+      "binary_source": "06_rtkit_microkernel_preload.macho",
+      "file_offset": "Scheduler thread queue arrays",
+      "confidence": "EXTRACTED",
+      "validation_method": "Disassembly of scheduler context switch handler"
+    },
+    {
+      "id": "FASTPATH_WRAP_MASK",
+      "constant": "0x00ff",
+      "binary_source": "01_motion_expert_app.macho",
+      "file_offset": "Producer head increment logic",
+      "confidence": "INFERRED",
+      "validation_method": "Masking logic in SPSC ring index calculation"
+    },
+    {
+      "id": "CONTEXT_SWITCH_LATENCY",
+      "constant": "450 nanoseconds",
+      "binary_source": "Architectural timing model",
+      "file_offset": "Calculated from ARM64e cycle count at 800 MHz",
+      "confidence": "INFERRED",
+      "validation_method": "Instruction cycle count simulation"
+    },
+    {
+      "id": "SIRI_HOTWORD_POWER_MW",
+      "constant": "1.85 milliwatts",
+      "binary_source": "Power telemetry reports",
+      "file_offset": "AOP2 SRAM retention rail current draw",
+      "confidence": "INFERRED",
+      "validation_method": "Device power tree modeling"
+    },
+    {
+      "id": "DCP_AOD_COLOR_DEPTH",
+      "constant": "RGB565 / Palette Sub-sampled",
+      "binary_source": "dcp-control driver properties",
+      "file_offset": "Pixel format descriptors",
+      "confidence": "TENTATIVE",
+      "validation_method": "Frame buffer stride and dimension correlation"
+    }
+  ]
+}
